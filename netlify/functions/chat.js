@@ -5,6 +5,8 @@ exports.handler = async function (event) {
 
   const { messages, systemPrompt } = JSON.parse(event.body);
 
+  // Messages may contain string content or array content (when image is attached).
+  // Pass them through as-is — the Anthropic API handles both formats.
   const response = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
