@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BC STEM Tutor</title>
+  <title>Unstuck — BC STEM Help</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -693,31 +693,31 @@
 
   <!-- ── Header ───────────────────────────── -->
   <header class="site-header">
-    <div class="logo-mark">S</div>
+    <div class="logo-mark">U</div>
     <div class="logo-text">
-      <span class="logo-title">BC STEM Tutor</span>
-      <span class="logo-sub">British Columbia Curriculum</span>
+      <span class="logo-title">Unstuck</span>
+      <span class="logo-sub">BC Secondary STEM Help</span>
     </div>
     <div class="header-right">
       <div class="student-badge" id="student-badge">
         <div class="avatar" id="student-avatar">?</div>
         <span id="student-badge-name"></span>
       </div>
-      <button class="btn-ghost" id="btn-change-subject" style="display:none">Change Subject</button>
+      <button class="btn-ghost" id="btn-change-subject" style="display:none">Switch Subject</button>
     </div>
   </header>
 
   <!-- ── Entry Screen ─────────────────────── -->
   <main class="screen active" id="screen-entry">
     <div class="entry-card">
-      <p class="entry-eyebrow">BC Ministry of Education Curriculum</p>
-      <h1 class="entry-heading">Your personal<br /><em>STEM tutor</em></h1>
+      <p class="entry-eyebrow">No judgement. No pressure. Just help.</p>
+      <h1 class="entry-heading">Finally get<br /><em>unstuck.</em></h1>
       <p class="entry-sub">
-        Step-by-step guidance through BC's most challenging secondary courses.
-        Pick your subject and start asking questions.
+        Struggling with a concept and not sure how to ask? You're in the right place.
+        Pick your subject, ask anything, and we'll work through it together — step by step.
       </p>
 
-      <label class="field-label" for="name-input">Your first name</label>
+      <label class="field-label" for="name-input">What's your first name?</label>
       <input
         class="name-input"
         id="name-input"
@@ -728,14 +728,14 @@
       />
 
       <hr class="divider" />
-      <p class="field-label" style="margin-bottom:14px;">Choose a subject</p>
+      <p class="field-label" style="margin-bottom:14px;">Which subject are you stuck on?</p>
 
       <div class="subject-grid" id="subject-grid">
         <!-- populated by JS -->
       </div>
 
       <button class="btn-primary" id="btn-start" disabled>
-        Begin Session →
+        Let's get unstuck →
       </button>
     </div>
   </main>
@@ -761,7 +761,7 @@
 
       <div class="sidebar-change">
         <button class="btn-ghost" style="width:100%;font-size:12px;" onclick="changeSubject()">
-          ← Change Subject
+          ← Switch Subject
         </button>
       </div>
     </aside>
@@ -783,7 +783,7 @@
           <textarea
             class="chat-input"
             id="chat-input"
-            placeholder="Ask a question, show me your working, or type a topic…"
+            placeholder="Describe what's confusing you — there are no bad questions…"
             rows="1"
           ></textarea>
           <button class="send-btn" id="send-btn" disabled>
@@ -873,9 +873,10 @@
       });
 
       // Welcome message
-      const welcome = `Hi <strong>${studentName}</strong> — welcome to your <strong>${selectedSubject.label}</strong> session. 
-        I'm here to help you work through any topic, step by step. You can pick a topic from the sidebar on the left, 
-        or just type a question below. Show me your working when you have it — I'll help you find where things go wrong.`;
+      const welcome = `Hey <strong>${studentName}</strong> — no pressure here. We're going to work through <strong>${selectedSubject.label}</strong> together, 
+        at whatever pace makes sense for you. There are no bad questions. Pick a topic from the sidebar, 
+        or just describe what's confusing you below — even if you're not sure how to explain it. 
+        If you have your own notes or working, share those too and we'll figure out where things went sideways.`;
       document.getElementById('welcome-text').innerHTML = welcome;
 
       // Reset chat
