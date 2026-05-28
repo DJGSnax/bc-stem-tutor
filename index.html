@@ -1384,7 +1384,15 @@ Teaching approach — follow this carefully:
       wrapper.appendChild(bubble);
       chatMsgs.appendChild(wrapper);
       renderMath(bubble);
-      chatMsgs.scrollTop = chatMsgs.scrollHeight;
+
+      if (role === 'user') {
+        // Scroll to show the sent message
+        chatMsgs.scrollTop = chatMsgs.scrollHeight;
+      } else {
+        // Scroll to the top of the response so the learner reads from the beginning
+        wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
       return wrapper;
     }
 
