@@ -294,6 +294,19 @@
       cursor: not-allowed;
     }
 
+    .entry-hint {
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--slate);
+      text-align: center;
+      min-height: 18px;
+      transition: color 0.2s;
+    }
+
+    .entry-hint.error {
+      color: var(--amber-lt);
+    }
+
     /* ── Tutor Screen ──────────────────────────────────────── */
     #screen-tutor {
       flex-direction: row;
@@ -863,6 +876,7 @@
       <button class="btn-primary" id="btn-start" disabled>
         Let's get unstuck →
       </button>
+      <p class="entry-hint" id="entry-hint">Enter your name and choose a subject to begin.</p>
     </div>
   </main>
 
@@ -1006,7 +1020,24 @@
     nameInput.addEventListener('input', updateStartBtn);
 
     function updateStartBtn() {
-      btnStart.disabled = !(nameInput.value.trim() && selectedSubject);
+      const hasName    = !!nameInput.value.trim();
+      const hasSubject = !!selectedSubject;
+      btnStart.disabled = !(hasName && hasSubject);
+
+      const hint = document.getElementById('entry-hint');
+      if (hasName && hasSubject) {
+        hint.textContent = '';
+        hint.classList.remove('error');
+      } else if (!hasName && !hasSubject) {
+        hint.textContent = 'Enter your name and choose a subject to begin.';
+        hint.classList.remove('error');
+      } else if (!hasName) {
+        hint.textContent = 'Just need your first name and you\'re good to go.';
+        hint.classList.add('error');
+      } else {
+        hint.textContent = 'Now pick a subject and you\'re all set.';
+        hint.classList.add('error');
+      }
     }
 
     document.getElementById('btn-start').addEventListener('click', startSession);
