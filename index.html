@@ -7,8 +7,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <script src="curriculum.js"></script>
-
   <style>
     /* ── Design Tokens ─────────────────────────────────────── */
     :root {
@@ -236,75 +234,38 @@
       margin-bottom: 28px;
     }
 
-    /* Subject grid */
-    .subject-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 36px;
-    }
-
-    .subject-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.10);
-      border-radius: 10px;
-      padding: 16px;
-      cursor: pointer;
-      transition: all 0.2s;
-      text-align: left;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .subject-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      transition: opacity 0.2s;
-    }
-
-    .subject-card:hover {
-      border-color: rgba(201,147,58,0.4);
-      background: rgba(201,147,58,0.06);
-      transform: translateY(-1px);
-    }
-
-    .subject-card.selected {
-      border-color: var(--amber);
-      background: rgba(201,147,58,0.10);
-    }
-
-    .subject-card.selected::after {
-      content: '✓';
-      position: absolute;
-      top: 10px;
-      right: 12px;
-      font-size: 12px;
-      color: var(--amber);
-      font-weight: 700;
-    }
-
-    .subject-icon {
-      font-size: 22px;
-      margin-bottom: 8px;
-      display: block;
-      font-family: 'DM Mono', monospace;
-      color: var(--amber-lt);
-    }
-
-    .subject-name {
-      font-size: 13px;
-      font-weight: 500;
+    /* Subject dropdown */
+    .subject-select {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: var(--radius);
+      padding: 13px 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
       color: var(--white);
-      line-height: 1.3;
-      margin-bottom: 2px;
+      outline: none;
+      cursor: pointer;
+      margin-bottom: 32px;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%236b8299'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      transition: border-color 0.2s, background-color 0.2s;
     }
 
-    .subject-grade {
-      font-size: 11px;
+    .subject-select:focus {
+      border-color: var(--amber);
+      background-color: rgba(201,147,58,0.06);
+    }
+
+    .subject-select option {
+      background: var(--navy-mid);
+      color: var(--white);
+    }
+
+    .subject-select option:disabled {
       color: var(--slate);
-      font-weight: 300;
     }
 
     .btn-primary {
@@ -894,11 +855,10 @@
       />
 
       <hr class="divider" />
-      <p class="field-label" style="margin-bottom:14px;">Which subject are you stuck on?</p>
-
-      <div class="subject-grid" id="subject-grid">
-        <!-- populated by JS -->
-      </div>
+      <label class="field-label" for="subject-select">Which subject are you stuck on?</label>
+      <select class="subject-select" id="subject-select">
+        <option value="" disabled selected>Select a subject…</option>
+      </select>
 
       <button class="btn-primary" id="btn-start" disabled>
         Let's get unstuck →
@@ -989,38 +949,59 @@
   </main>
 
   <script>
+    // ── Curriculum Data ────────────────────────────────────
+    const CURRICULUM = [
+      {
+        id: "precalc11", label: "Pre-Calculus 11", grade: "Grade 11", icon: "∑",
+        topics: ["Arithmetic Sequences & Series","Geometric Sequences & Series","Infinite Geometric Series","Absolute Value & Reciprocal Functions","Radical Expressions & Equations","Rational Expressions & Equations","Quadratic Functions","Quadratic Equations","Linear & Quadratic Inequalities","Trigonometry — Angles in Standard Position","Sine & Cosine Law","Systems of Equations"],
+        systemPrompt: (name) => `You are an expert BC high school math tutor helping ${name} with Pre-Calculus 11, following the BC Ministry of Education curriculum. Your role is to guide ${name} to understanding — not just give answers. Use the Socratic method where appropriate. Curriculum scope: Sequences and Series, Absolute Value and Reciprocal Functions, Radical and Rational Expressions and Equations, Quadratic Functions and Equations, Inequalities, Trigonometry (sine law, cosine law). Use clear step-by-step explanations. Encourage ${name} when struggling. Keep responses focused and digestible. If asked about topics outside this course, gently redirect.`
+      },
+      {
+        id: "precalc12", label: "Pre-Calculus 12", grade: "Grade 12", icon: "f(x)",
+        topics: ["Transformations of Functions","Radical Functions","Polynomial Functions & Equations","Rational Functions","Exponential Functions & Equations","Logarithmic Functions & Equations","Laws of Logarithms","Trigonometric Functions & Transformations","Trigonometric Equations","Trigonometric Identities","Permutations & Combinations","Binomial Theorem"],
+        systemPrompt: (name) => `You are an expert BC high school math tutor helping ${name} with Pre-Calculus 12, following the BC Ministry of Education curriculum. Your role is to guide ${name} to understanding — not just give answers. Use the Socratic method where appropriate. Curriculum scope: Transformations of Functions, Radical/Polynomial/Rational Functions, Exponential and Logarithmic Functions and Equations, Trigonometric Functions/Transformations/Equations/Identities, Combinatorics. Pre-Calculus 12 is a gateway to university math — help ${name} build solid foundations. Keep responses focused and digestible.`
+      },
+      {
+        id: "chem11", label: "Chemistry 11", grade: "Grade 11", icon: "⚗",
+        topics: ["Lab Safety & Measurement","The Mole Concept","Molar Mass & Molar Volume","Stoichiometry","Atomic Theory & Structure","The Periodic Table","Chemical Bonding","Organic Chemistry Intro","Naming Compounds & Writing Formulas","Chemical Reactions & Balancing","Aqueous Solutions","Acids & Bases Introduction"],
+        systemPrompt: (name) => `You are an expert BC high school chemistry tutor helping ${name} with Chemistry 11, following the BC Ministry of Education curriculum. Your role is to guide ${name} to understanding — not just give answers. Curriculum scope: Safety and measurement, The Mole concept, Stoichiometry, Atomic theory, Periodic Table and trends, Chemical bonding (ionic, covalent, VSEPR), Organic Chemistry intro, Naming compounds, Types of reactions, Acids and bases. Show all unit conversions using dimensional analysis. For mole calculations break every problem into clear steps. Use real-world examples. Be patient and encouraging. Keep responses focused.`
+      },
+      {
+        id: "physics11", label: "Physics 11", grade: "Grade 11", icon: "⚡",
+        topics: ["Kinematics — 1D Motion","Kinematics — 2D Motion & Vectors","Projectile Motion","Newton's Laws of Motion","Friction & Inclined Planes","Momentum & Impulse","Work, Energy & Power","Energy Conservation","Waves & Wave Properties","Sound & The Doppler Effect","Light & Optics","Special Relativity Introduction"],
+        systemPrompt: (name) => `You are an expert BC high school physics tutor helping ${name} with Physics 11, following the BC Ministry of Education curriculum. Your role is to guide ${name} to understanding — not just give answers. Curriculum scope: Kinematics (1D, 2D, vectors, projectile motion), Dynamics (Newton's Laws, friction, inclined planes), Momentum and Impulse, Work/Energy/Power, Waves, Sound and Doppler, Light and Optics, Special Relativity intro. Always use: given → find → equation → solve → check units framework. Emphasize free body diagrams for force problems. Show unit analysis at every step. Keep responses focused.`
+      },
+      {
+        id: "calc12", label: "Calculus 12", grade: "Grade 12", icon: "∫",
+        topics: ["Limits & Continuity","Definition of the Derivative","Differentiation Rules","Chain Rule","Implicit Differentiation","Related Rates","Curve Sketching","Optimization","Antiderivatives","Definite Integrals","Fundamental Theorem of Calculus","Area Between Curves"],
+        systemPrompt: (name) => `You are an expert BC high school calculus tutor helping ${name} with Calculus 12, following the BC Ministry of Education curriculum. Your role is to guide ${name} to understanding — not just give answers. Curriculum scope: Limits and Continuity, Definition and Interpretation of the Derivative, Differentiation Rules (power, product, quotient, chain), Implicit Differentiation, Related Rates, Curve Sketching, Optimization, Antiderivatives, Definite Integrals, Fundamental Theorem of Calculus, Area Between Curves. Use consistent notation. Emphasize conceptual understanding alongside procedures. Normalize struggle and celebrate breakthroughs.`
+      }
+    ];
+
     // ── State ──────────────────────────────────────────────
-    let studentName    = '';
+    let studentName     = '';
     let selectedSubject = null;
-    let currentTopic   = null;
-    let messages       = [];
-    let isLoading      = false;
+    let currentTopic    = null;
+    let messages        = [];
+    let isLoading       = false;
 
     // ── Entry Screen ───────────────────────────────────────
-    const subjectGrid  = document.getElementById('subject-grid');
-    const nameInput    = document.getElementById('name-input');
-    const btnStart     = document.getElementById('btn-start');
+    const subjectSelect = document.getElementById('subject-select');
+    const nameInput     = document.getElementById('name-input');
+    const btnStart      = document.getElementById('btn-start');
 
-    // Render subject cards
+    // Populate dropdown
     CURRICULUM.forEach(subject => {
-      const card = document.createElement('button');
-      card.className = 'subject-card';
-      card.dataset.id = subject.id;
-      card.innerHTML = `
-        <span class="subject-icon">${subject.icon}</span>
-        <p class="subject-name">${subject.label}</p>
-        <p class="subject-grade">${subject.grade}</p>
-      `;
-      card.addEventListener('click', () => selectSubject(subject, card));
-      subjectGrid.appendChild(card);
+      const opt = document.createElement('option');
+      opt.value = subject.id;
+      opt.textContent = `${subject.icon}  ${subject.label} — ${subject.grade}`;
+      subjectSelect.appendChild(opt);
     });
 
-    function selectSubject(subject, card) {
-      document.querySelectorAll('.subject-card').forEach(c => c.classList.remove('selected'));
-      card.classList.add('selected');
-      selectedSubject = subject;
+    subjectSelect.addEventListener('change', () => {
+      selectedSubject = CURRICULUM.find(s => s.id === subjectSelect.value) || null;
       updateStartBtn();
-    }
+    });
 
     nameInput.addEventListener('input', updateStartBtn);
 
