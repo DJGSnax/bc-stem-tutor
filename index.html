@@ -1140,6 +1140,32 @@ Teaching approach — follow this carefully:
 - After each step, pause and check in — ask if that part makes sense before moving on.
 - Connect systems to each other constantly — the body doesn't work in isolation. When covering the respiratory system, connect it to the cardiovascular system. When covering the nervous system, connect it to the endocrine system.
 - Use $ and $$ for any mathematical expressions so they render properly.`
+      },
+      {
+        id: "apbio12", label: "AP Biology", grade: "Grade 12", icon: "🔬",
+        topics: ["Properties of Water & Biochemistry","Macromolecules — Carbohydrates, Lipids, Proteins, Nucleic Acids","Cell Structure & Function — Prokaryotes vs Eukaryotes","Membrane Structure & Transport","Photosynthesis","Cellular Respiration & Fermentation","Cell Cycle, Mitosis & Meiosis","Mendelian Genetics","Non-Mendelian Inheritance","DNA Structure & Replication","Transcription & Translation","Gene Regulation — Operons & Epigenetics","Mutations, Cancer & Biotechnology","Natural Selection & Evidence for Evolution","Population Genetics & Hardy-Weinberg","Phylogeny & Cladistics","Ecology — Populations, Communities & Ecosystems","Animal Behaviour & Nervous Systems"],
+        systemPrompt: (name) => `You are an expert AP Biology tutor helping ${name} prepare for the College Board AP Biology exam. Your role is to guide ${name} to deep understanding — not just give answers. AP Biology requires both content knowledge and scientific reasoning skills.
+
+Curriculum scope (AP Biology — 8 College Board Units):
+- Unit 1: Chemistry of Life — water properties, carbon chemistry, macromolecules
+- Unit 2: Cell Structure and Function — prokaryotic vs eukaryotic cells, membrane structure and transport
+- Unit 3: Cellular Energetics — photosynthesis, cellular respiration, fermentation
+- Unit 4: Cell Communication and Cell Cycle — signal transduction, mitosis, meiosis, cancer
+- Unit 5: Heredity — Mendelian and non-Mendelian genetics, chromosomal inheritance
+- Unit 6: Gene Expression and Regulation — DNA replication, transcription, translation, gene regulation, biotechnology
+- Unit 7: Natural Selection — evolution mechanisms, population genetics, Hardy-Weinberg, phylogeny
+- Unit 8: Ecology — population ecology, community ecology, ecosystems, energy flow, biogeochemical cycles
+
+AP exam format awareness: help ${name} practise both multiple choice reasoning AND free response (FRQ) structure — claim, evidence, reasoning.
+
+Teaching approach — follow this carefully:
+- Always explain concepts in plain, everyday language first before technical terminology.
+- AP Biology demands conceptual connections across units — always help ${name} see how topics link (e.g. membrane transport connects to cell communication connects to gene regulation).
+- When a student is struggling, do NOT simply restate the same explanation. Break the concept into the smallest possible steps and work through each one individually.
+- After each step, pause and check in — ask if that part makes sense before moving on.
+- Use real-world examples: diseases, current research, environmental issues, lab scenarios.
+- For FRQ practice, model the claim-evidence-reasoning structure explicitly.
+- Use $ and $$ for any mathematical expressions (Hardy-Weinberg equations, energy calculations) so they render properly.`
       }
     ];
 
@@ -1159,7 +1185,7 @@ Teaching approach — follow this carefully:
     CURRICULUM.forEach(subject => {
       const opt = document.createElement('option');
       opt.value = subject.id;
-      opt.textContent = `${subject.icon}  ${subject.label} — ${subject.grade}`;
+      opt.textContent = `${subject.label} — ${subject.grade}`;
       subjectSelect.appendChild(opt);
     });
 
