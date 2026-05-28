@@ -1330,7 +1330,7 @@
         isListening = false;
         micBtn.classList.remove('listening');
         voiceStatusBar.classList.remove('visible');
-        chatInput.placeholder = 'Describe what's confusing you — there are no bad questions…';
+        chatInput.placeholder = 'Describe what\'s confusing you — there are no bad questions…';
 
         // Auto-send if there's a transcript
         const text = chatInput.value.trim();
@@ -1348,7 +1348,7 @@
         isListening = false;
         micBtn.classList.remove('listening');
         voiceStatusBar.classList.remove('visible');
-        chatInput.placeholder = 'Describe what's confusing you — there are no bad questions…';
+        chatInput.placeholder = 'Describe what\'s confusing you — there are no bad questions…';
         if (e.error !== 'no-speech' && e.error !== 'aborted') {
           addBubble('assistant', 'Microphone error: ' + e.error + '. Check your browser permissions and try again.');
         }
